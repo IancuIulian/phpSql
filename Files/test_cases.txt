@@ -1,0 +1,25 @@
+
+Valid situations:
+
+./sql.php --select '*' --from interns.csv
+
+./sql.php --select name,age --from interns.csv
+
+./sql.php --select name,age --from interns.csv --sort-column age --sort-mode natural --sort-direction asc
+
+./sql.php --select name,age --from interns.csv --unique name
+
+./sql.php --select name,age --from interns.csv --where 'age>20'
+
+./sql.php --select name,age --from interns.csv --output json
+
+./sql.php --select name,age --from interns.csv --output csv --output-file output_file.csv
+
+./sql.php --select name,age --from interns.csv --sort-column age --sort-mode natural --sort-direction desc --unique name --where 'age>20'  --output csv --output-file output_file.csv
+
+
+
+
+Invalid situations:
+
+- do you need instructions for these? :)
