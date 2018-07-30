@@ -52,8 +52,6 @@ function sortNatural(array $arr, int $key, string $direction): array
  */
 function sortAlpha(array $arr, int $key, string $direction): array
 {
-    $minIndex = 0;
-    $temp     = 0;
     for ($i = 1, $length = count($arr); $i < $length - 1; $i++) {
         $minIndex = $i;
         for ($j = $i + 1; $j < $length; $j++) {
@@ -92,8 +90,6 @@ function sortAlpha(array $arr, int $key, string $direction): array
  */
 function sortNumeric(array $arr, int $key, string $direction): array
 {
-    $minIndex = 0;
-    $temp     = 0;
     for ($i = 1, $length = count($arr); $i < $length - 1; $i++) {
         $minIndex = $i;
         for ($j = $i + 1; $j < $length; $j++) {
