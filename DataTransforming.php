@@ -15,8 +15,6 @@ declare(strict_types=1);
  */
 function sortNatural(array $arr, int $key, string $direction): array
 {
-    $minIndex = 0;
-    $temp     = 0;
     for ($i = 1, $length = count($arr); $i < $length - 1; $i++) {
         $minIndex = $i;
         for ($j = $i + 1; $j < $length; $j++) {
@@ -135,12 +133,7 @@ function sortByColumn(array $arr, array $userOptions): array
     $direction = $userOptions['sort-direction'];
 
 
-    $columnKey = $arr[0][0]; //holds the working column corresponding key, used the parsing the arrays from level 2
-    foreach ($arr[0] as $key => $value) {
-        if ($column === $value) {
-            $columnKey = $key;
-        }
-    }
+    $columnKey = extractHeaderKey($arr, $column);
 
     if ($mode === 'natural') {
         $arr = sortNatural($arr, $columnKey, $direction);

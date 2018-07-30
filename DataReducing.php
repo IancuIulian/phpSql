@@ -12,34 +12,17 @@ declare(strict_types=1);
  */
 function removeDuplicates(array $arr, string $userInput): array
 {
-    $columnKey = $arr[0][0]; //holds the working column corresponding key, used for parsing the arrays from level 2
-    foreach ($arr[0] as $key => $value) {
-        if ($userInput === $value) {
-            $columnKey = $key;
+    $columnKey = extractHeaderKey($arr, $userInput);
+
+    $occurrences = [];
+    return array_filter($arr, function (array $row) use (&$occurrences, $columnKey) {
+        if (!array_search($row[$columnKey], $occurrences)) {
+            $occurrences[] = $row[$columnKey];
+            return true;
         }
-    }
 
-    $distinctValuesArray = [];
-    foreach ($arr as $key => $value) {
-        $distinctValuesArray[] = $arr[$key][$columnKey];
-    }
-    $distinctValuesArray = array_unique($distinctValuesArray);
-
-    $resultArray = [];
-    foreach ($distinctValuesArray as $key => $columnValue) {
-        $foundFirstAppearance = false;
-        foreach ($arr as $entryKey => $v) {
-            if ($arr[$entryKey][$columnKey] === $columnValue) {
-                $resultArray[]        = $arr[$entryKey];
-                $foundFirstAppearance = true;
-            }
-            if ($foundFirstAppearance) {
-                break;
-            }
-        }
-    }
-
-    return $resultArray;
+        return false;
+    });
 }
 
 /**
@@ -49,22 +32,12 @@ function removeDuplicates(array $arr, string $userInput): array
  */
 function filterByWhere(array $arr, string $userInput): array
 {
-    $wordPattern = '/([\w]+)/u';
-    preg_match($wordPattern, $userInput, $match);
-    $userWhereColumn = $match[0];
-
-    $symbolPattern = '/(<>|>|<|=)/u';
-    preg_match($symbolPattern, $userInput, $match);
+    preg_match('/(<>|>|<|=)/u', $userInput, $match);
     $userWhereSymbol = $match[0];
 
-    $userWhereValue = substr($userInput, strpos($userInput, $userWhereSymbol) + strlen($userWhereSymbol));
+    list($userWhereColumn, $userWhereValue) = explode($userWhereSymbol, $userInput);
 
-    $columnKey = $arr[0][0]; //holds the working column corresponding key, used for parsing the arrays from level 2
-    foreach ($arr[0] as $key => $value) {
-        if ($userWhereColumn === $value) {
-            $columnKey = $key;
-        }
-    }
+    $columnKey = extractHeaderKey($arr, $userWhereColumn);
 
     $resultArray[0] = $arr[0];
     foreach ($arr as $entryKey => $entry) {
@@ -100,4 +73,20 @@ function filterByWhere(array $arr, string $userInput): array
     }
 
     return $resultArray;
+}
+
+/**
+ * @param array $arr
+ * @param $column
+ * @return int|string
+ */
+function extractHeaderKey(array $arr, $column)
+{
+    $columnKey = ''; //holds the working column corresponding key, used for parsing the arrays from level 2
+    foreach ($arr[0] as $key => $value) {
+        if ($column === $value) {
+            $columnKey = $key;
+        }
+    }
+    return $columnKey;
 }

@@ -12,25 +12,9 @@ const AVAILABLE_OPTIONS = [
     'sort-column',
     'sort-mode',
     'sort-direction',
-//    'multi-sort',
-//    'multi-sort-dir',
+
     'unique',
     'where',
-
-//    'aggregate-sum',
-//    'aggregate-product',
-//    'aggregate-list',
-//    'aggregate-list-glue',
-
-//    'uppercase-column',
-//    'lowercase-column',
-//    'titlecase-column',
-//    'power-values',
-
-//    'map-function',
-//    'map-function-column',
-
-//    'column-sort',
 
     'output',
     'output-file',

@@ -14,8 +14,7 @@ function fileToArray(string $filename): array
     $returnArr = [];
     $filename  = FILES_DIRECTORY . $filename;
     $f         = fopen($filename, 'r');
-    while ($line = fgets($f)) {
-        $line        = trim($line, "\n\r");
+    while ($line = fgetcsv($f)) {
         $returnArr[] = $line;
     }
     fclose($f);
@@ -30,20 +29,6 @@ function fileToArray(string $filename): array
 function helpMessages(string $helpFile): array
 {
     return fileToArray($helpFile);
-}
-
-/**
- * @param string $filename
- * @return array
- */
-function fileToTableStructure(string $filename): array
-{
-    $returnArray = fileToArray($filename);
-    foreach ($returnArray as $key => $line) {
-        $returnArray[$key] = explode(',', $line);
-    }
-
-    return $returnArray;
 }
 
 

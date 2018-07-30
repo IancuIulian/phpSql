@@ -25,6 +25,9 @@ function validateSelect(array $options): array
 }
 
 /**
+ * --from parameters accepts a valid .csv file
+ *      -> does not accept filename that begins with digits. To modify this, check $pattern inside this function
+ *
  * @param array $options
  * @return array
  */
@@ -56,22 +59,21 @@ function validateFrom(array $options): array
  */
 function validateSort(array $options): array
 {
-    if (isset($options['sort-column']) || isset($options['sort-mode']) || isset($options['sort-direction'])) {
-        if (!isset($options['sort-column']) || !isset($options['sort-mode']) || !isset($options['sort-direction'])) {
-            return ['Sorting option requires each of the following to be specified:' . PHP_EOL
-                . '     --sort-column     column_name' . PHP_EOL
-                . '     --sort-mode       natural|alpha|numeric' . PHP_EOL
-                . '     --sort-direction  asc|desc'
-            ];
-
-        }
-    }
     if (!isset($options['sort-column']) && !isset($options['sort-mode']) && !isset($options['sort-direction'])) {
         return [];
     }
+
+    if (!isset($options['sort-column']) || !isset($options['sort-mode']) || !isset($options['sort-direction'])) {
+        return ['Sorting option requires each of the following to be specified:' . PHP_EOL
+            . '     --sort-column     column_name' . PHP_EOL
+            . '     --sort-mode       natural|alpha|numeric' . PHP_EOL
+            . '     --sort-direction  asc|desc'
+        ];
+
+    }
+
     $errors  = [];
-    $pattern = '/[\w]+/u';
-    preg_match($pattern, $options['sort-column'], $matches);
+    preg_match('/[\w]+/u', $options['sort-column'], $matches);
     if ($matches[0] !== $options['sort-column']) {
         $errors[] = 'Invalid format for option  --sort-column. Format: --sort-column column_name';
     }
@@ -94,8 +96,8 @@ function validateUnique(array $options): array
     if (!isset($options['unique'])) {
         return [];
     }
-    $pattern = '/[\w]+/u';
-    preg_match($pattern, $options['unique'], $matches);
+
+    preg_match('/[\w]+/u', $options['unique'], $matches);
     if ($matches[0] !== $options['unique']) {
         return ['Invalid format for option  --unique. Format: --unique column_name'];
     }
@@ -109,10 +111,8 @@ function validateWhere(array $options): array
         return [];
     }
 
-    $wordPattern   = '/([\w]+)/u';
-    $symbolPattern = '/(<>|>|<|=)/u';
-    preg_match_all($wordPattern, $options['where'], $wordMatches);
-    preg_match_all($symbolPattern, $options['where'], $symbolMatches);
+    preg_match_all('/([\w]+)/u', $options['where'], $wordMatches);
+    preg_match_all('/(<>|>|<|=)/u', $options['where'], $symbolMatches);
     if ((count($wordMatches[0]) !== 2) || (count($symbolMatches[0]) !== 1)) {
         return ['Invalid format for option  --where. Available options:' . PHP_EOL
             . '     --where     \'column<>value\'' . PHP_EOL
