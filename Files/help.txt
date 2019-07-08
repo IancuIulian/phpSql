@@ -1,0 +1,30 @@
+
+======================= AVAILABLE OPTIONS =======================
+INPUT:
+    --select        column1,column2,...
+    --from          filename.csv
+
+
+OUTPUT:
+    --output        csv|json|screen      (default - screen)
+    --output-file   filename.csv    (required if --output=csv)
+
+
+SORTING:
+    --sort-column       column_name
+    --sort-mode         natural
+                        alpha
+                        numeric
+    --sort-direction    asc
+                        desc
+
+    --unique            column_name     (returns distinct values)
+
+
+FILTERING:
+    --where     'column<>value'
+    --where     'column=value'
+    --where     'column<value'
+    --where     'column>value'
+
+=================================================================
